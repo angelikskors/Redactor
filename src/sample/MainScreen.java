@@ -98,11 +98,11 @@ public class MainScreen extends VBox {
         );
 
         Image image1 = new Image(FileHelper.getInputStreamForFile("search.png"));
-        Button search = new Button();
-        search.setGraphic(new ImageView(image1));
-        search.setText("Search");
-        search.getStyleClass().add("my-button-search");
-        search.setOnAction(new EventHandler<ActionEvent>() {
+        Button count = new Button();
+        count.setGraphic(new ImageView(image1));
+        count.setText("Count");
+        count.getStyleClass().add("my-button-search");
+        count.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 int strings;
@@ -129,7 +129,7 @@ public class MainScreen extends VBox {
             }
         });
 
-        option.getChildren().add(search);
+        option.getChildren().add(count);
 
         Image image = new Image(FileHelper.getInputStreamForFile("save-icon.png"));
         Button save = new Button();
