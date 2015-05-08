@@ -34,21 +34,28 @@ public class FileHelper {
 
     }
 
-    public StringBuilder readFile(File f) throws IOException {
-        //  info=new ArrayList();
-        BufferedReader bf = new BufferedReader(new FileReader(f));
-        if (f.exists()) {
+    public StringBuilder readFile(File f) {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader bf = null;
+        try {
+            bf = new BufferedReader(new FileReader(f));
             String str = null;
             while ((str = bf.readLine()) != null) {
-                sb = new StringBuilder();
                 sb.append(str);
-
             }
-            bf.close();
-            return sb;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (bf != null) {
+                try {
+                    bf.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
-        return null;
+        return sb;
     }
 
     public static InputStream getInputStreamForFile(String path) {

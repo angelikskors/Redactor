@@ -22,15 +22,31 @@ import java.io.IOException;
 
 
 public class MainScreen extends VBox {
+    public static final String NEW_WINDOW_ACTION = "New Window";
+    public static final String CREATE_ACTION = "Create";
+    public static final String OPEN_ACTION = "Open";
+    public static final String CLOSE_ACTION = "Close";
     private TextArea textArea;
     private HBox hBox;
     private VBox vBox;
+
+    private File currentEditFile;
+
+    private boolean isNewFile;
+
 
     MainScreen() {
         VBox uiNewUser = buildUIForNewUser();
         getChildren().add(uiNewUser);
     }
 
+    public MainScreen(boolean isNewFile) {
+        this();
+        this.isNewFile = isNewFile;
+        if(isNewFile){
+            addTextField(vBox);
+        }
+    }
 
     private VBox buildUIForNewUser() {
         File f = new File("style.css");
@@ -42,60 +58,33 @@ public class MainScreen extends VBox {
         HBox option = new HBox();
         option.setSpacing(50);
         vBox.getChildren().add(option);
-        final ChoiceBox<String> choices = new ChoiceBox<String>(FXCollections.observableArrayList("New Window", "Create", "Open", "Close"));
+        final ChoiceBox<String> choices = new ChoiceBox<String>(FXCollections.observableArrayList(NEW_WINDOW_ACTION, CREATE_ACTION, OPEN_ACTION, CLOSE_ACTION));
         choices.getStyleClass().add("my-button");
 
         option.getChildren().add(choices);
 
-        choices.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener() {
-
-                                                                            int count = 0;
-                                                                            VBox vebox = new VBox();
-
-                                                                            @Override
-                                                                            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                                                                                if (vBox.getChildren().contains(textArea)) {
-                                                                                    System.out.println("!!!!!!!!!!!!!!!");
-                                                                                }
-
-
-                                                                                if (observable.getValue().toString().equals("0")) {
-                                                                                    newWindow();
-
-                                                                                } else if (observable.getValue().toString().equals("1")) {
-
-                                                                                    count++;
-                                                                                    if (count > 1) {
-                                                                                        newWindow();
-
-                                                                                    } else {
-                                                                                        addTextField(vBox);
-                                                                                    }
-
-
-                                                                                } else if (observable.getValue().toString().equals("2")) {
-
-
-                                                                                    if (oldValue.toString().equals("1") || (oldValue.toString().equals("-1"))) {
-                                                                                        openFile(newWindow(vebox));
-
-
-                                                                                    } else {
-                                                                                        openFile(vBox);
-                                                                                    }
-
-                                                                                } else if (observable.getValue().toString().equals(2)) {
-                                                                                    getScene().getWindow().hide();
-
-
-                                                                                } else
-                                                                                    System.out.println("No matches found");
-
-
-                                                                            }
-                                                                        }
-
-        );
+        choices.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(NEW_WINDOW_ACTION.equals(newValue)){
+                    startNewWindow();
+                }else if(CREATE_ACTION.equals(newValue)){
+                    if(currentEditFile == null && !isNewFile){
+                        createFile();
+                    }else {
+                        startCreateNewFileWindow();
+                    }
+                }else if(OPEN_ACTION.equals(newValue)){
+                    if(currentEditFile == null && !isNewFile){
+                        openFile();
+                    }else {
+                        startOpenNewFileWindow();
+                    }
+                }else if(CLOSE_ACTION.equals(newValue)){
+                    closeCurrentWindow();
+                }
+            }
+        });
 
         Image image1 = new Image(FileHelper.getInputStreamForFile("search.png"));
         Button count = new Button();
@@ -160,12 +149,35 @@ public class MainScreen extends VBox {
         return vBox;
     }
 
-    private void newWindow() {
+    private void createFile() {
+        addTextField(vBox);
+        isNewFile = true;
+    }
+
+    private void closeCurrentWindow() {
+        getScene().getWindow().hide();
+    }
+
+    private void startNewWindow() {
         Stage stage = new Stage();
         MainScreen root = new MainScreen();
         stage.setScene(new Scene(root, 720, 720));
         stage.show();
+    }
 
+    private void startCreateNewFileWindow(){
+        Stage stage = new Stage();
+        MainScreen root = new MainScreen(true);
+        stage.setScene(new Scene(root, 720, 720));
+        stage.show();
+    }
+
+    private void startOpenNewFileWindow(){
+        Stage stage = new Stage();
+        MainScreen root = new MainScreen();
+        root.openFile();
+        stage.setScene(new Scene(root, 720, 720));
+        stage.show();
     }
 
     private VBox newWindow(VBox vebox) {
@@ -202,20 +214,15 @@ public class MainScreen extends VBox {
         vBox.getChildren().add(hBox);
     }
 
-    private boolean openFile(VBox vBox) {
+    private boolean openFile() {
         Stage stage = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
 
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("txt", "*.txt"));
-        File file = fileChooser.showOpenDialog(stage);
-        if (file != null) {
-            try {
-                addTextField(vBox, new FileHelper().readFile(file));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        currentEditFile = fileChooser.showOpenDialog(stage);
+        if (currentEditFile != null) {
+            addTextField(vBox, new FileHelper().readFile(currentEditFile));
         }
         return false;
     }
