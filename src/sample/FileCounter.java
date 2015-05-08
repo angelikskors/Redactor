@@ -47,32 +47,33 @@ public class FileCounter {
         return s;    //возврат строки с текстом из файла
     }
 
-    public int countStrings(TextArea textArea) throws IOException {
-        int count = 0;
-        BufferedReader bf = new BufferedReader(new FileReader(textArea.getText()));
-        String str = null;
-        while ((str = bf.readLine()) != null) {
+    public int countStrings(String str)  {
+        StringBuilder b = new StringBuilder();
+        b.append(str);
+        int index = -1;
+        int count = -1;
+        do {
+            index = b.indexOf("\n", index + 1);
             count++;
-
-        }
-        bf.close();
+        } while (index != -1);
         return count;
     }
 
-    public int countWords(TextArea textArea) throws IOException {
+    public int countWords(String str) throws IOException {
 
-        String text1[] = textArea.getText().split("\\s");
+        String text1[] = str.split("\\s");
         ArrayList<String> array = new ArrayList();
 
         for (int j = 0; j < text1.length - 1; j++) {
             array.add(text1[j]);
 
         }
-        return array.size();
+        if(array.size()==0){return 0;}
+        return array.size()+1;
     }
 
-    public int countSymbols(TextArea textArea) {
-        String text1[] = textArea.getText().split("\\s");
+    public int countSymbols(String str) {
+        String text1[] = str.split("\\s");
         StringBuilder symbols = new StringBuilder();
         for (int i = 0; i < text1.length; i++) {
             symbols.append(text1[i]);

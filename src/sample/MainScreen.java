@@ -12,6 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -86,11 +88,16 @@ public class MainScreen extends VBox {
             }
         });
 
-        Image image1 = new Image(FileHelper.getInputStreamForFile("search.png"));
+        Image image1 = new Image(FileHelper.getInputStreamForFile("count.png"));
+        ImageView newImageView=new ImageView();
+        newImageView.setImage(image1);
+        newImageView.setFitHeight(55);
+        newImageView.setFitWidth(55);
+
         Button count = new Button();
-        count.setGraphic(new ImageView(image1));
+        count.setGraphic(newImageView);
         count.setText("Count");
-        count.getStyleClass().add("my-button-search");
+        count.getStyleClass().add("my-button-count");
         count.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -99,22 +106,24 @@ public class MainScreen extends VBox {
                 int symbols;
 
                 FileCounter newCount = new FileCounter();
-                if (textArea.getText() != null) {
+              if(textArea.getText()==null){System.out.println(" null");}
                     try {
-                        strings = newCount.countStrings(textArea);
-                        symbols = newCount.countSymbols(textArea);
-                        words = newCount.countWords(textArea);
-                        SecondScreen root = new SecondScreen(strings, words, symbols);
-                        Stage stage = new Stage();
+                       strings = newCount.countStrings(textArea.getText());
+                        symbols = newCount.countSymbols(textArea.getText());
+                        words = newCount.countWords(textArea.getText());
+                        SecondScreen root = new SecondScreen( strings,words, symbols);
 
-                        stage.setScene(new Scene(root));
+                        Stage stage = new Stage();
+                        stage.setTitle("Statistics");
+                        Scene scene = new Scene(root,420,140);
+                        stage.setScene(scene);
                         stage.show();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
 
-                }
+              // }
             }
         });
 
@@ -145,6 +154,13 @@ public class MainScreen extends VBox {
             }
 
         });
+        Button search = new Button();
+        search.setText("Search");
+        search.getStyleClass().add("my-button-search");
+
+
+        search.setGraphic(new ImageView(image));
+        option.getChildren().add(search);
 
         return vBox;
     }
@@ -161,14 +177,14 @@ public class MainScreen extends VBox {
     private void startNewWindow() {
         Stage stage = new Stage();
         MainScreen root = new MainScreen();
-        stage.setScene(new Scene(root, 720, 720));
+        stage.setScene(new Scene(root, 800,750));
         stage.show();
     }
 
     private void startCreateNewFileWindow(){
         Stage stage = new Stage();
         MainScreen root = new MainScreen(true);
-        stage.setScene(new Scene(root, 720, 720));
+        stage.setScene(new Scene(root, 800,750));
         stage.show();
     }
 
@@ -176,7 +192,7 @@ public class MainScreen extends VBox {
         Stage stage = new Stage();
         MainScreen root = new MainScreen();
         root.openFile();
-        stage.setScene(new Scene(root, 720, 720));
+        stage.setScene(new Scene(root,800,750));
         stage.show();
     }
 
@@ -184,7 +200,7 @@ public class MainScreen extends VBox {
 
         Stage stage = new Stage();
         MainScreen root = new MainScreen();
-        stage.setScene(new Scene(root, 720, 720));
+        stage.setScene(new Scene(root,800,750));
         vebox = new VBox();
         root.getChildren().add(vebox);
         stage.show();

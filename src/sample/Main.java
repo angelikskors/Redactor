@@ -25,7 +25,7 @@ public class Main extends Application {
 
         MainScreen screen = new MainScreen();
 
-        Scene scene = new Scene(screen, 720, 720);
+        Scene scene = new Scene(screen, 800,750);
 
 
         primaryStage.setScene(scene);
