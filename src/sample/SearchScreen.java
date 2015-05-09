@@ -12,11 +12,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SearchScreen extends VBox {
     TextField textField;
     TextArea textArea;
+
+    private final List<FoundWord> foundWords = new ArrayList<>();
+    private int currentWord = 0;
 
     SearchScreen(TextArea textArea) {
         this.textArea = textArea;
@@ -57,35 +62,57 @@ public class SearchScreen extends VBox {
                 if (textArea.getText().length() == 0 || textField.getText().length() == 0) {
                     number1.setText("0");
                 } else {
-                     number1.setText(String.valueOf(searchWords(textArea, textField.getText())));
+                    number1.setText(String.valueOf(searchWords(textArea, textField.getText())));
 
                 }
 
             }
         });
-    }
-
-    public static int searchWords(TextArea textarea, String search) {
-        String s = textarea.getText();
-        String[] word = s.split(" ");
-        int[] num = new int[word.length];
-        for (int i = 0; i < num.length; i++) {
-            num[i] = 0;
-        }
-        for (int i = 0; i < word.length; i++) {
-            if (word[i] != "") {
-                for (int j = 0; j < word.length; j++) {
-                    if ((word[i].equals(search))) {
-
-                        num[i]++;textarea.selectRange(textarea.getText().indexOf(word[i]), search.length());
-return num[i];
-
-                    }
+        Button nextWord = new Button();
+        nextWord.setText("Next");
+        nextWord.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (currentWord < foundWords.size()) {
+                    selectWord(textArea);
+                } else if (!foundWords.isEmpty() && currentWord == foundWords.size()) {
+                    currentWord = 0;
+                    selectWord(textArea);
                 }
             }
-        }
+        });
+        forButton.getChildren().add(nextWord);
+    }
 
-        return 0;
+    private void selectWord(TextArea textArea) {
+        FoundWord foundWord = foundWords.get(currentWord++);
+        textArea.selectRange(foundWord.startPosition, foundWord.endPosition);
+    }
+
+    public int searchWords(TextArea textarea, String search) {
+        foundWords.clear();
+        String s = textarea.getText();
+        int fromIndex = 0;
+        while ((fromIndex = s.indexOf(search, fromIndex)) != -1) {
+            foundWords.add(new FoundWord(search, fromIndex));
+            fromIndex += search.length();
+        }
+        if(!foundWords.isEmpty()){
+            selectWord(textarea);
+        }
+        return foundWords.size();
+    }
+
+    private static class FoundWord {
+        private final String word;
+        private final int startPosition;
+        private final int endPosition;
+
+        public FoundWord(String word, int startPosition) {
+            this.word = word;
+            this.startPosition = startPosition;
+            this.endPosition = startPosition + word.length();
+        }
     }
 }
 
