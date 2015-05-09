@@ -8,6 +8,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -19,6 +22,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.jnlp.FileSaveService;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -28,7 +32,7 @@ public class MainScreen extends VBox {
     public static final String CREATE_ACTION = "Create";
     public static final String OPEN_ACTION = "Open";
     public static final String CLOSE_ACTION = "Close";
-    private TextArea textArea;
+    public  TextArea textArea;
     private HBox hBox;
     private VBox vBox;
 
@@ -104,9 +108,20 @@ public class MainScreen extends VBox {
                 int strings;
                 int words;
                 int symbols;
+                if( !isNewFile){
+                    Image image = new Image(FileHelper.getInputStreamForFile("questions.jpg"));
 
+                    ErrorScreen error=new ErrorScreen(" Nothing to count ",image);
+                    Stage stage = new Stage();
+                    stage.setTitle("ERROR");
+                    Scene scene = new Scene(error,360,140);
+                    stage.setScene(scene);
+                    stage.show();
+
+
+                }else{
                 FileCounter newCount = new FileCounter();
-              if(textArea.getText()==null){System.out.println(" null");}
+
                     try {
                        strings = newCount.countStrings(textArea.getText());
                         symbols = newCount.countSymbols(textArea.getText());
@@ -123,9 +138,9 @@ public class MainScreen extends VBox {
                     }
 
 
-              // }
+              // }}
             }
-        });
+        }});
 
         option.getChildren().add(count);
 
@@ -141,6 +156,18 @@ public class MainScreen extends VBox {
 
             @Override
             public void handle(ActionEvent event) {
+                if( !isNewFile){
+                    Image image = new Image(FileHelper.getInputStreamForFile("questions1.jpg"));
+
+                    ErrorScreen error=new ErrorScreen(" Nothing to save ",image);
+                    Stage stage = new Stage();
+                    stage.setTitle("ERROR");
+                    Scene scene = new Scene(error,360,140);
+                    stage.setScene(scene);
+                    stage.show();
+
+
+                }else{
 
                 Stage stage = new Stage();
                 FileChooser fileChooser = new FileChooser();
@@ -151,7 +178,7 @@ public class MainScreen extends VBox {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
+            }}
 
         });
         Button search = new Button();
@@ -161,9 +188,39 @@ public class MainScreen extends VBox {
 
         search.setGraphic(new ImageView(image));
         option.getChildren().add(search);
+        search.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if( !isNewFile){
+                    Image image = new Image(FileHelper.getInputStreamForFile("questions3.jpg"));
+
+                    ErrorScreen error=new ErrorScreen(" Nothing to search ",image);
+                    Stage stage = new Stage();
+                    stage.setTitle("ERROR");
+                    Scene scene = new Scene(error,360,140);
+                    stage.setScene(scene);
+                    stage.show();
+
+
+                }else{
+
+               SearchScreen newSearch=new SearchScreen( textArea );
+                    Stage stage=new Stage();
+                    stage.setTitle("Search");
+                    Scene scene = new Scene(newSearch,360,140);
+                    stage.setScene(scene);
+                    stage.show();
+
+
+
+
+
+
+        }}});
 
         return vBox;
     }
+
 
     private void createFile() {
         addTextField(vBox);

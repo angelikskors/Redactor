@@ -21,7 +21,7 @@ public class SecondScreen extends VBox {
     public SecondScreen(int strings,int words, int symbols) {
 
         setPadding(new Insets(20, 50, 10, 10));
-      setSpacing(10);
+        setSpacing(10);
 
         HBox stringsBox = new HBox();
 
@@ -37,10 +37,6 @@ public class SecondScreen extends VBox {
         this.strings = new TextField("" + strings);
         this.strings.setEditable(false);
         this.strings.setAlignment(Pos.CENTER);
-
-
-
-
         stringsBox.getChildren().add(this.strings);
 
         getChildren().add(stringsBox);

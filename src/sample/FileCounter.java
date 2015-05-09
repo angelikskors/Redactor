@@ -8,9 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by PC Kors on 08.05.2015.
- */
 public class FileCounter {
 
     private static String ReadFile(File file) {    //на вход расположение и имя файла
@@ -82,5 +79,8 @@ public class FileCounter {
         return symbols.length();
     }
 
+    }
 
-}
+
+
+
