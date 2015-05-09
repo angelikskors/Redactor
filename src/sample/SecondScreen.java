@@ -18,7 +18,7 @@ public class SecondScreen extends VBox {
     private final TextField symbols;
 
 
-    public SecondScreen(int strings,int words, int symbols) {
+    public SecondScreen(int strings, int words, int symbols) {
 
         setPadding(new Insets(20, 50, 10, 10));
         setSpacing(10);
@@ -27,7 +27,7 @@ public class SecondScreen extends VBox {
 
         stringsBox.setSpacing(5);
 
-        Label string=new Label();
+        Label string = new Label();
         string.setText("The number of strings : ");
         string.setFont(new Font("Times New Roman", 18));
         string.setAlignment(Pos.CENTER);
@@ -43,7 +43,7 @@ public class SecondScreen extends VBox {
 
         HBox wordsHBox = new HBox();
         wordsHBox.setSpacing(5);
-        Label word=new Label();
+        Label word = new Label();
         word.setText("The number of words :  ");
         word.setFont(new Font("Times New Roman", 18));
         word.setAlignment(Pos.CENTER);
@@ -56,7 +56,7 @@ public class SecondScreen extends VBox {
         wordsHBox.getChildren().add(this.words);
 
         getChildren().add(wordsHBox);
-        Label symbol=new Label();
+        Label symbol = new Label();
         symbol.setText("The number of symbols: ");
         symbol.setFont(new Font("Times New Roman", 18));
         symbol.setAlignment(Pos.CENTER);

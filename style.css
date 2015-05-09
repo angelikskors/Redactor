@@ -4,6 +4,12 @@
      -fx-font: 17pt "Times New Roman";
      -fx-effect: dropshadow(gaussian, gray, 1, 1.0, 1, 1);
  }
+ .my-button-choice {
+      -fx-min-height: 70px;
+      -fx-min-width: 200px;
+      -fx-font: 17pt "Times New Roman";
+      -fx-effect: dropshadow(gaussian, gray, 1, 1.0, 1, 1);
+  }
  .my-button-save {
       -fx-min-height: 70px;
       -fx-min-width: 110px;

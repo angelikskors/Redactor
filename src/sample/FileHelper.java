@@ -10,6 +10,40 @@ public class FileHelper {
     private static String pathFile;
     private StringBuilder sb;
 
+    private static String ReadFile(File file) {    //на вход расположение и имя файла
+
+        String s = null;
+
+        StringBuilder contents = new StringBuilder();
+        BufferedReader reader = null;
+
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String text = null;
+
+
+            while ((text = reader.readLine()) != null) {
+                contents.append(text)
+                        .append(System.getProperty(
+                                "line.separator"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        s = contents.toString();
+        return s;    //возврат строки с текстом из файла
+    }
+
     public static void save(String pathFile) {
         File file = new File(pathFile);
         if (!file.exists()) {

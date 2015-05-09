@@ -69,7 +69,7 @@ public class SearchScreen extends VBox {
             }
         });
         Button nextWord = new Button();
-        nextWord.setText("Next");
+        nextWord.setText(">>");
         nextWord.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -81,7 +81,7 @@ public class SearchScreen extends VBox {
                 }
             }
         });
-        forButton.getChildren().add(nextWord);
+        textSearch.getChildren().add(nextWord);
     }
 
     private void selectWord(TextArea textArea) {
@@ -97,7 +97,7 @@ public class SearchScreen extends VBox {
             foundWords.add(new FoundWord(search, fromIndex));
             fromIndex += search.length();
         }
-        if(!foundWords.isEmpty()){
+        if (!foundWords.isEmpty()) {
             selectWord(textarea);
         }
         return foundWords.size();

@@ -10,41 +10,8 @@ import java.util.ArrayList;
 
 public class FileCounter {
 
-    private static String ReadFile(File file) {    //на вход расположение и имя файла
 
-        String s = null;
-
-        StringBuilder contents = new StringBuilder();
-        BufferedReader reader = null;
-
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String text = null;
-
-
-            while ((text = reader.readLine()) != null) {
-                contents.append(text)
-                        .append(System.getProperty(
-                                "line.separator"));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        s = contents.toString();
-        return s;    //возврат строки с текстом из файла
-    }
-
-    public int countStrings(String str)  {
+    public int countStrings(String str) {
         StringBuilder b = new StringBuilder();
         b.append(str);
         int index = -1;
@@ -65,8 +32,10 @@ public class FileCounter {
             array.add(text1[j]);
 
         }
-        if(array.size()==0){return 0;}
-        return array.size()+1;
+        if (array.size() == 0) {
+            return 0;
+        }
+        return array.size() + 1;
     }
 
     public int countSymbols(String str) {
@@ -79,7 +48,7 @@ public class FileCounter {
         return symbols.length();
     }
 
-    }
+}
 
 
 
