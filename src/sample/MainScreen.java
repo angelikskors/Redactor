@@ -11,7 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -31,9 +31,9 @@ public class MainScreen extends VBox {
     public static final String OPEN_ACTION = "Open";
     public static final String CLOSE_ACTION = "Close";
     private int strings;
-    private int words;
+    private  int words;
     private int symbols;
-    public TextArea textArea;
+    public  TextArea textArea;
     private HBox hBox;
     private VBox vBox;
     FunScreen newSc;
@@ -41,6 +41,7 @@ public class MainScreen extends VBox {
     private File currentEditFile;
 
     private boolean isNewFile;
+
 
     MainScreen() {
         VBox uiNewUser = buildUIForNewUser();
@@ -50,7 +51,7 @@ public class MainScreen extends VBox {
     public MainScreen(boolean isNewFile) {
         this();
         this.isNewFile = isNewFile;
-        if (isNewFile) {
+        if(isNewFile){
             addTextField(vBox);
         }
     }
@@ -73,28 +74,28 @@ public class MainScreen extends VBox {
         choices.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (NEW_WINDOW_ACTION.equals(newValue)) {
+                if(NEW_WINDOW_ACTION.equals(newValue)){
                     startNewWindow();
-                } else if (CREATE_ACTION.equals(newValue)) {
-                    if (currentEditFile == null && !isNewFile) {
+                }else if(CREATE_ACTION.equals(newValue)){
+                    if(currentEditFile == null && !isNewFile){
                         createFile();
-                    } else {
+                    }else {
                         startCreateNewFileWindow();
                     }
-                } else if (OPEN_ACTION.equals(newValue)) {
-                    if (currentEditFile == null && !isNewFile) {
+                }else if(OPEN_ACTION.equals(newValue)){
+                    if(currentEditFile == null && !isNewFile){
                         openFile();
-                    } else {
+                    }else {
                         startOpenNewFileWindow();
                     }
-                } else if (CLOSE_ACTION.equals(newValue)) {
+                }else if(CLOSE_ACTION.equals(newValue)){
                     closeCurrentWindow();
                 }
             }
         });
 
         Image image1 = new Image(FileHelper.getInputStreamForFile("count.png"));
-        ImageView newImageView = new ImageView();
+        ImageView newImageView=new ImageView();
         newImageView.setImage(image1);
         newImageView.setFitHeight(55);
         newImageView.setFitWidth(55);
@@ -107,14 +108,13 @@ public class MainScreen extends VBox {
             @Override
             public void handle(ActionEvent event) {
 
-                if (!isNewFile) {
+                if( !isNewFile){
                     createErrorStat();
-                } else {
+                }else{
 
-                    createStatiscticsWindow();
-                }
-            }
-        });
+                        createStatiscticsWindow();
+             }
+        }});
 
         option.getChildren().add(count);
 
@@ -159,20 +159,20 @@ public class MainScreen extends VBox {
             public void handle(ActionEvent event) {
                 if (!isNewFile) {
                     createErrorSeaerch();
-                } else {
+               } else {
                     createSearchWindow();
-                }
+      }
             }
         });
-        HBox boxForStuff = new HBox();
+        HBox boxForStuff=new HBox();
 
         vBox.getChildren().add(boxForStuff);
-        Button eye = new Button();
+        Button eye =new Button();
         Image image2 = new Image(FileHelper.getInputStreamForFile("eye.png"));
-        ImageView iname = new ImageView(image2);
+        ImageView iname=new ImageView(image2);
         iname.setFitWidth(30);
         iname.setFitHeight(30);
-        boxForStuff.setPadding(new Insets(10, 10, 10, 10));
+        boxForStuff.setPadding(new Insets(10,10,10,10));
         boxForStuff.setAlignment(Pos.BASELINE_RIGHT);
         eye.setGraphic(iname);
         boxForStuff.getChildren().add(eye);
@@ -181,17 +181,17 @@ public class MainScreen extends VBox {
             public void handle(ActionEvent event) {
                 if (!isNewFile) {
                     createErrorEye();
-                } else
-                    currentString();
+                    }else
+                currentString();
             }
         });
-        return vBox;
+  return vBox;
     }
 
     private void createErrorEye() {
         Image image = new Image(FileHelper.getInputStreamForFile("WTF.jpg"));
 
-        ErrorScreen error = new ErrorScreen(image);
+        ErrorScreen error = new ErrorScreen( image);
         Stage stage = new Stage();
         stage.setTitle("ERROR");
         Scene scene = new Scene(error, 170, 170);
@@ -231,31 +231,39 @@ public class MainScreen extends VBox {
     }
 
     private void currentString() {
-        int page = 1800;
-        int symbols = textArea.getCaretPosition();
-        double quantityPages = symbols / page;
+        int page=1800;
+        int symbols=textArea.getCaretPosition();
+        double quantityPages=symbols/page;
+        long round =Math.round(quantityPages);
+        if(symbols%page!=0){
+            round++;
+        }
         Stage stage = new Stage();
-        long round = Math.round(quantityPages);
-        String str = "The number of pages : ";
+
+        String str="The number of pages : ";
 
 
-        if (quantityPages < 1) {
+
+        if(quantityPages<1){
             Image image2 = new Image(FileHelper.getInputStreamForFile("consider.png"));
-            newSc = new FunScreen(str + round, image2);
+             newSc= new FunScreen(str+round,image2);
 
 
-        } else if (quantityPages < 5) {
+        }else if(quantityPages<5){
             Image image2 = new Image(FileHelper.getInputStreamForFile("challenge_accepted.png"));
-            newSc = new FunScreen(str + round, image2);
-        } else if (quantityPages < 10) {
+             newSc= new FunScreen(str+round,image2);
+        }
+        else if (quantityPages<10){
             Image image2 = new Image(FileHelper.getInputStreamForFile("obama_not_bad.png"));
-            newSc = new FunScreen(str + round, image2);
-        } else if (quantityPages > 20) {
+             newSc= new FunScreen(str+round,image2);
+        }
+        else if (quantityPages>20){
             Image image2 = new Image(FileHelper.getInputStreamForFile("fuckYEAH.png"));
-            newSc = new FunScreen(str + round, image2);
-        } else if (quantityPages < 30) {
+             newSc= new FunScreen(str+round,image2);
+        }
+        else if(quantityPages<30){
             Image image2 = new Image(FileHelper.getInputStreamForFile("hug.jpg"));
-            newSc = new FunScreen(str + round, image2);
+             newSc= new FunScreen(str+round,image2);
         }
         Scene scene = new Scene(newSc, 400, 140);
         stage.setScene(scene);
@@ -263,19 +271,16 @@ public class MainScreen extends VBox {
 
 
     }
-
-    private void createErrorStat() {
+    private  void createErrorStat(){
         Image image = new Image(FileHelper.getInputStreamForFile("questions.jpg"));
 
-        ErrorScreen error = new ErrorScreen(" Nothing to count ", image);
+        ErrorScreen error=new ErrorScreen(" Nothing to count ",image);
         Stage stage = new Stage();
         stage.setTitle("ERROR");
-        Scene scene = new Scene(error, 360, 140);
+        Scene scene = new Scene(error,360,140);
         stage.setScene(scene);
-        stage.show();
-    }
-
-    private void createStatiscticsWindow() {
+        stage.show();}
+    private void createStatiscticsWindow(){
         FileCounter newCount = new FileCounter();
 
         strings = newCount.countStrings(textArea.getText());
@@ -285,14 +290,13 @@ public class MainScreen extends VBox {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        SecondScreen root = new SecondScreen(strings, words, symbols);
+        SecondScreen root = new SecondScreen( strings,words, symbols);
 
         Stage stage = new Stage();
         stage.setTitle("Statistics");
-        Scene scene = new Scene(root, 420, 140);
+        Scene scene = new Scene(root,420,140);
         stage.setScene(scene);
-        stage.show();
-    }
+        stage.show();}
 
     private void createFile() {
         addTextField(vBox);
@@ -306,22 +310,22 @@ public class MainScreen extends VBox {
     private void startNewWindow() {
         Stage stage = new Stage();
         MainScreen root = new MainScreen();
-        stage.setScene(new Scene(root, 800, 750));
+        stage.setScene(new Scene(root, 800,750));
         stage.show();
     }
 
-    private void startCreateNewFileWindow() {
+    private void startCreateNewFileWindow(){
         Stage stage = new Stage();
         MainScreen root = new MainScreen(true);
-        stage.setScene(new Scene(root, 800, 750));
+        stage.setScene(new Scene(root, 800,750));
         stage.show();
     }
 
-    private void startOpenNewFileWindow() {
+    private void startOpenNewFileWindow(){
         Stage stage = new Stage();
         MainScreen root = new MainScreen();
         root.openFile();
-        stage.setScene(new Scene(root, 800, 750));
+        stage.setScene(new Scene(root,800,750));
         stage.show();
     }
 
@@ -329,7 +333,7 @@ public class MainScreen extends VBox {
 
         Stage stage = new Stage();
         MainScreen root = new MainScreen();
-        stage.setScene(new Scene(root, 800, 750));
+        stage.setScene(new Scene(root,800,750));
         vebox = new VBox();
         root.getChildren().add(vebox);
         stage.show();
@@ -357,7 +361,7 @@ public class MainScreen extends VBox {
         textArea = new TextArea();
         textArea.setEditable(true);
 
-        ScrollBar scrollBarv = (ScrollBar) textArea.lookup(".scroll-bar:horizontal");
+        ScrollBar scrollBarv = (ScrollBar)textArea.lookup(".scroll-bar:horizontal");
         scrollBarv.setDisable(true);
         textArea.setText(str.toString());
         textArea.setFont(new Font("Times New Roman", 20));
